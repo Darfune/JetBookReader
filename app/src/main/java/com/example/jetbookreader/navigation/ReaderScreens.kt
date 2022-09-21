@@ -1,4 +1,4 @@
-package com.example.jetbookreader.ui.theme.navigation
+package com.example.jetbookreader.navigation
 
 enum class ReaderScreens {
     SplashScreen,

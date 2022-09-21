@@ -1,4 +1,4 @@
-package com.example.jetbookreader.ui.theme.di
+package com.example.jetbookreader.di
 
 import dagger.Module
 import dagger.hilt.InstallIn

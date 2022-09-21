@@ -1,4 +1,4 @@
-package com.example.jetbookreader.ui.theme.screens.details
+package com.example.jetbookreader.screens.details
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController

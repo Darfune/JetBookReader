@@ -1,4 +1,4 @@
-package com.example.jetbookreader.ui.theme.screens.splash
+package com.example.jetbookreader.screens.splash
 
 import android.window.SplashScreen
 import androidx.compose.runtime.Composable

@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.jetbookreader.ui.theme.JetBookReaderTheme
-import com.example.jetbookreader.ui.theme.navigation.ReaderNavigation
+import com.example.jetbookreader.navigation.ReaderNavigation
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.AndroidEntryPoint
 

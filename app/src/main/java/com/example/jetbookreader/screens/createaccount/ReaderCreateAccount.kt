@@ -1,4 +1,4 @@
-package com.example.jetbookreader.ui.theme.screens.createaccount
+package com.example.jetbookreader.screens.createaccount
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
