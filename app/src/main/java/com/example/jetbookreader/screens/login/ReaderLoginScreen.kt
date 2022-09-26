@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.jetbookreader.screens.splash.EmailInputField
 import com.example.jetbookreader.screens.splash.ReaderLogo
 
 @Composable
@@ -65,50 +66,3 @@ fun userForm() {
 }
 
 
-@Composable
-fun EmailInputField(
-    modifier: Modifier = Modifier,
-    emailState: MutableState<String>,
-    labelId: String = "Email",
-    enabled: Boolean = true,
-    imeAction: ImeAction = ImeAction.Next,
-    onAction: KeyboardActions = KeyboardActions.Default
-) {
-    InputField(
-        modifier = modifier,
-        valueState = emailState,
-        labelId = labelId,
-        enabled = enabled,
-        keyboardType = KeyboardType.Email,
-        imeAction = imeAction,
-        onAction = onAction
-    )
-}
-
-@Composable
-fun InputField(
-    modifier: Modifier = Modifier,
-    valueState: MutableState<String>,
-    labelId: String,
-    enabled: Boolean,
-    isSingleLine: Boolean = true,
-    keyboardType: KeyboardType = KeyboardType.Text,
-    imeAction: ImeAction = ImeAction.Next,
-    onAction: KeyboardActions = KeyboardActions.Default
-) {
-    OutlinedTextField(
-        value = valueState.value, onValueChange = { valueState.value = it },
-        label = { Text(text = labelId) },
-        singleLine = isSingleLine,
-        textStyle = TextStyle(
-            fontSize = 18.sp,
-            color = MaterialTheme.colors.onBackground
-        ),
-        modifier = modifier
-            .padding(bottom = 10.dp, start = 10.dp, end = 10.dp)
-            .fillMaxWidth(),
-        enabled = enabled,
-        keyboardOptions = KeyboardOptions(keyboardType = keyboardType, imeAction = imeAction),
-        keyboardActions = onAction
-    )
-}
