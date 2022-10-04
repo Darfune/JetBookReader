@@ -33,12 +33,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.jetbookreader.R
+import com.example.jetbookreader.navigation.ReaderScreens
 import com.example.jetbookreader.screens.splash.EmailInputField
 import com.example.jetbookreader.screens.splash.PasswordInputField
 import com.example.jetbookreader.screens.splash.ReaderLogo
 
 @Composable
-fun LoginScreen(navController: NavController) {
+fun LoginScreen(navController: NavController,
+viewModel: LoginScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
 
     val showLoginForm = rememberSaveable { mutableStateOf(true) }
 
@@ -49,11 +51,14 @@ fun LoginScreen(navController: NavController) {
         ) {
             ReaderLogo()
             if (showLoginForm.value)
-                UserForm(loading = false, isCreateAccount = false) { email, pass ->
+                UserForm(loading = false, isCreateAccount = false) { email, password ->
                     //Todo: login to firebase account
+                    viewModel.signInWithEmailAndPassword(email, password) {
+                        navController.navigate(ReaderScreens.ReaderHomeScreen.name)
+                    }
                 }
             else
-                UserForm(loading = false, isCreateAccount = true) { email, pass ->
+                UserForm(loading = false, isCreateAccount = true) { email, password ->
                     //Todo: create Firebase account
                 }
         }
