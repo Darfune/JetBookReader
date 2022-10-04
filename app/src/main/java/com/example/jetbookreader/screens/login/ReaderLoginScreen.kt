@@ -60,6 +60,9 @@ viewModel: LoginScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel
             else
                 UserForm(loading = false, isCreateAccount = true) { email, password ->
                     //Todo: create Firebase account
+                    viewModel.createUserWithEmailAndPassword(email, password) {
+                        navController.navigate(ReaderScreens.ReaderHomeScreen.name)
+                    }
                 }
         }
         Spacer(modifier = Modifier.height(15.dp))
