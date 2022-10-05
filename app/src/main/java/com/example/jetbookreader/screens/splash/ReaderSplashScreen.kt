@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.jetbookreader.navigation.ReaderScreens
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
 
 @Composable
@@ -32,15 +33,14 @@ fun ReaderSplashScreen(navController: NavController) {
     }
     LaunchedEffect(key1 = true) {
         scale.animateTo(
-            targetValue = 0.9f,
-            animationSpec = tween(durationMillis = 800,
-                easing = {
-                    OvershootInterpolator(8f)
-                        .getInterpolation(it)
-                })
+            targetValue = 0.9f, animationSpec = tween(durationMillis = 800, easing = {
+                OvershootInterpolator(8f).getInterpolation(it)
+            })
         )
         delay(2000L)
-        navController.navigate(ReaderScreens.LoginScreen.name)
+        if (FirebaseAuth.getInstance().currentUser?.email.isNullOrEmpty())
+            navController.navigate(ReaderScreens.LoginScreen.name)
+        else navController.navigate(ReaderScreens.ReaderHomeScreen.name)
     }
 
     Surface(
@@ -51,8 +51,7 @@ fun ReaderSplashScreen(navController: NavController) {
         shape = CircleShape,
         color = Color.White,
         border = BorderStroke(
-            width = 2.dp,
-            color = Color.LightGray
+            width = 2.dp, color = Color.LightGray
         )
     ) {
         Column(
