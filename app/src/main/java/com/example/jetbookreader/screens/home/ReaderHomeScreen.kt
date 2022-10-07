@@ -24,6 +24,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
+import coil.compose.rememberImagePainter
 import com.example.jetbookreader.model.MBook
 import com.example.jetbookreader.navigation.ReaderScreens
 import com.example.jetbookreader.screens.splash.FABContent
@@ -31,9 +33,8 @@ import com.example.jetbookreader.screens.splash.ReaderAppBar
 import com.example.jetbookreader.screens.splash.TitleSection
 import com.google.firebase.auth.FirebaseAuth
 
-@Preview
 @Composable
-fun HomeScreen(navController: NavController = NavController(LocalContext.current)) {
+fun HomeScreen(navController: NavController /*= NavController(LocalContext.current)*/) {
     Scaffold(topBar = {
         ReaderAppBar(
             title = "Google Books Viewer",
@@ -96,4 +97,48 @@ fun ReadingRightNowArea(books: List<MBook>, navController: NavController) {
 
 }
 
+@Preview
+@Composable
+fun ListCard(
+    book: MBook = MBook("dasd", "Running", "Me and you", "Hello World"),
+    onPressDetails: (String) -> Unit
+) {
 
+    val context = LocalContext.current
+    val resources = context.resources
+
+    val displayMetrics = resources.displayMetrics
+
+    val screenWidth = displayMetrics.widthPixels / displayMetrics.density
+    val spacing = 10.dp
+
+    Card(shape = RoundedCornerShape(29.dp),
+        backgroundColor = Color.White,
+        elevation = 6.dp,
+        modifier = Modifier
+            .padding(16.dp)
+            .height(142.dp)
+            .width(202.dp)
+            .clickable {
+                onPressDetails.invoke(book.title.toString())
+            }) {
+        Column(
+            modifier = Modifier.width(screenWidth.dp - (spacing * 2)),
+            horizontalAlignment = Alignment.Start
+        ) {
+            Row(horizontalArrangement = Arrangement.Center) {
+                Image(
+                    painter = rememberImagePainter(data = ""),
+                    contentDescription = "book image",
+                    modifier = Modifier
+                        .height(140.dp)
+                        .width(100.dp)
+                        .padding(4.dp)
+                )
+                Column() {
+
+                }
+            }
+        }
+    }
+}
