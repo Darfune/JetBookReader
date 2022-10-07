@@ -37,6 +37,7 @@ import com.example.jetbookreader.navigation.ReaderScreens
 import com.example.jetbookreader.screens.splash.*
 import com.google.firebase.auth.FirebaseAuth
 
+
 @Preview
 @Composable
 fun HomeScreen(navController: NavController = NavController(LocalContext.current)) {
