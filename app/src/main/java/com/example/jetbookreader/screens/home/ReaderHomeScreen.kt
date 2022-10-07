@@ -1,17 +1,23 @@
 package com.example.jetbookreader.screens.home
 
+import android.graphics.Paint.Style
 import android.icu.text.CaseMap.Title
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -28,13 +34,12 @@ import coil.compose.AsyncImage
 import coil.compose.rememberImagePainter
 import com.example.jetbookreader.model.MBook
 import com.example.jetbookreader.navigation.ReaderScreens
-import com.example.jetbookreader.screens.splash.FABContent
-import com.example.jetbookreader.screens.splash.ReaderAppBar
-import com.example.jetbookreader.screens.splash.TitleSection
+import com.example.jetbookreader.screens.splash.*
 import com.google.firebase.auth.FirebaseAuth
 
+@Preview
 @Composable
-fun HomeScreen(navController: NavController /*= NavController(LocalContext.current)*/) {
+fun HomeScreen(navController: NavController = NavController(LocalContext.current)) {
     Scaffold(topBar = {
         ReaderAppBar(
             title = "Google Books Viewer",
@@ -89,56 +94,39 @@ fun HomeContent(navController: NavController) {
                 Divider()
             }
         }
+        ReadingRightNowArea(books = listOf(), navController)
+
+        TitleSection(label = "Reading List")
+
+        BookListArea(listOfBooks = emptyList(), navController)
+    }
+}
+
+@Composable
+fun BookListArea(listOfBooks: List<MBook>, navController: NavController) {
+    HorizontalScrollableComponent(listOfBooks) {
+        //TODO: on card clicked navigate to details
+    }
+}
+
+@Composable
+fun HorizontalScrollableComponent(listOfBooks: List<MBook>, onCardPressed: (String) -> Unit) {
+    val scrollState = rememberScrollState()
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(280.dp)
+            .horizontalScroll(scrollState)
+    ) {
+        for (book in listOfBooks) {
+            ListCard(book) {
+                onCardPressed(it)
+            }
+        }
     }
 }
 
 @Composable
 fun ReadingRightNowArea(books: List<MBook>, navController: NavController) {
-
-}
-
-@Preview
-@Composable
-fun ListCard(
-    book: MBook = MBook("dasd", "Running", "Me and you", "Hello World"),
-    onPressDetails: (String) -> Unit
-) {
-
-    val context = LocalContext.current
-    val resources = context.resources
-
-    val displayMetrics = resources.displayMetrics
-
-    val screenWidth = displayMetrics.widthPixels / displayMetrics.density
-    val spacing = 10.dp
-
-    Card(shape = RoundedCornerShape(29.dp),
-        backgroundColor = Color.White,
-        elevation = 6.dp,
-        modifier = Modifier
-            .padding(16.dp)
-            .height(142.dp)
-            .width(202.dp)
-            .clickable {
-                onPressDetails.invoke(book.title.toString())
-            }) {
-        Column(
-            modifier = Modifier.width(screenWidth.dp - (spacing * 2)),
-            horizontalAlignment = Alignment.Start
-        ) {
-            Row(horizontalArrangement = Arrangement.Center) {
-                Image(
-                    painter = rememberImagePainter(data = ""),
-                    contentDescription = "book image",
-                    modifier = Modifier
-                        .height(140.dp)
-                        .width(100.dp)
-                        .padding(4.dp)
-                )
-                Column() {
-
-                }
-            }
-        }
-    }
+    ListCard()
 }
