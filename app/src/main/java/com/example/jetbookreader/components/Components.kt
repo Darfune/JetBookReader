@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
@@ -162,7 +163,11 @@ fun TitleSection(
 
 @Composable
 fun ReaderAppBar(
-    title: String, showProfile: Boolean = true, navController: NavController
+    title: String,
+    icon: ImageVector? = null,
+    showProfile: Boolean = true,
+    navController: NavController,
+    onBackArrowClicked: () -> Unit = {}
 ) {
     TopAppBar(
         title = {
@@ -174,6 +179,13 @@ fun ReaderAppBar(
                             .clickable { RoundedCornerShape(12.dp) }
                             .scale(0.6f))
                 }
+
+                if (icon != null) Icon(imageVector = icon,
+                    contentDescription = "arrow back",
+                    tint = Color.Red.copy(alpha = 0.7f),
+                    modifier = Modifier.clickable { onBackArrowClicked.invoke() }
+                )
+                Spacer(modifier = Modifier.width(40.dp))
                 Text(
                     text = title,
                     color = Color.Red.copy(alpha = 0.7f),
@@ -182,7 +194,7 @@ fun ReaderAppBar(
                         fontSize = 20.sp
                     )
                 )
-                Spacer(modifier = Modifier.width(150.dp))
+
             }
         },
         actions = {
@@ -191,18 +203,21 @@ fun ReaderAppBar(
                     navController.navigate(ReaderScreens.LoginScreen.name)
                 }
             }) {
-                Icon(
-                    imageVector = Icons.Filled.Logout,
-                    contentDescription = "Logout",
-                    tint = Color.Green.copy(alpha = 0.4f)
-                )
+                if (showProfile) Row {
+                    Icon(
+                        imageVector = Icons.Filled.Logout,
+                        contentDescription = "Logout",
+                        tint = Color.Green.copy(alpha = 0.4f)
+                    )
+                }
+                else Box {}
+
             }
         },
         backgroundColor = Color.Transparent,
         elevation = 0.dp
     )
 }
-
 
 
 @Composable
