@@ -23,17 +23,22 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
+import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import com.example.jetbookreader.model.MBook
+import com.example.jetbookreader.model.googleapimodel.Item
 import com.example.jetbookreader.navigation.ReaderScreens
 import com.example.jetbookreader.screens.splash.InputField
 import com.example.jetbookreader.screens.splash.ReaderAppBar
 
 @Preview
 @Composable
-fun SearchScreen(navController: NavController = NavController(LocalContext.current)) {
+fun SearchScreen(
+    navController: NavController = NavController(LocalContext.current),
+    viewModel: BookSearchViewModel = hiltViewModel()
+) {
     Scaffold(topBar = {
         ReaderAppBar(
             title = "Search Books",
@@ -50,11 +55,11 @@ fun SearchScreen(navController: NavController = NavController(LocalContext.curre
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp)
-                ) {
-                    //TODO: search functionality
+                ) { searchQuery ->
+                    viewModel.searchBooks(query = searchQuery)
                 }
                 Spacer(modifier = Modifier.height(13.dp))
-                BookList(navController)
+                BookList(navController, viewModel)
             }
         }
     }
@@ -86,27 +91,31 @@ fun SearchForm(
 
 
 @Composable
-fun BookList(navController: NavController) {
-    val lisOfBooks = listOf<MBook>(
-        MBook(id = "1", title = "Test", authors = "Test", notes = null),
-        MBook(id = "1", title = "Test", authors = "Test", notes = null),
-        MBook(id = "1", title = "Test", authors = "Test", notes = null),
-        MBook(id = "1", title = "Test", authors = "Test", notes = null),
-        MBook(id = "1", title = "Test", authors = "Test", notes = null),
-        MBook(id = "1", title = "Test", authors = "Test", notes = null)
-    )
+fun BookList(navController: NavController, viewModel: BookSearchViewModel) {
+
+    val listOfBooks = viewModel.list
+
+
+//    val lisOfBooks = listOf<MBook>(
+//        MBook(id = "1", title = "Test", authors = "Test", notes = null),
+//        MBook(id = "1", title = "Test", authors = "Test", notes = null),
+//        MBook(id = "1", title = "Test", authors = "Test", notes = null),
+//        MBook(id = "1", title = "Test", authors = "Test", notes = null),
+//        MBook(id = "1", title = "Test", authors = "Test", notes = null),
+//        MBook(id = "1", title = "Test", authors = "Test", notes = null)
+//    )
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp)
     ) {
-        items(items = lisOfBooks) { book ->
+        items(items = listOfBooks) { book ->
             BookRow(book, navController)
         }
     }
 }
 
 @Composable
-fun BookRow(book: MBook, navController: NavController) {
+fun BookRow(book: Item, navController: NavController) {
     Card(modifier = Modifier
         .clickable { }
         .fillMaxWidth()
@@ -118,8 +127,9 @@ fun BookRow(book: MBook, navController: NavController) {
             modifier = Modifier.padding(5.dp),
             verticalAlignment = Alignment.Top
         ) {
+            val imageUrl: String = book.volumeInfo.imageLinks.smallThumbnail.ifEmpty { "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" }
             Image(
-                painter = rememberImagePainter(data = ""),
+                painter = rememberAsyncImagePainter(model = ""),
                 contentDescription = "book image",
                 modifier = Modifier
                     .width(80.dp)
@@ -127,9 +137,9 @@ fun BookRow(book: MBook, navController: NavController) {
                     .padding(end = 4.dp)
             )
             Column() {
-                Text(text = book.title.toString(), overflow = TextOverflow.Ellipsis)
+                Text(text = book.volumeInfo.title, overflow = TextOverflow.Ellipsis)
                 Text(
-                    text = "Authors ${book.authors.toString()}", overflow = TextOverflow.Ellipsis,
+                    text = "Authors ${book.volumeInfo.authors}", overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.caption
                 )
 
