@@ -1,5 +1,7 @@
 package com.example.jetbookreader.network
 
+import com.example.jetbookreader.model.googleapimodel.Book
+import com.example.jetbookreader.model.googleapimodel.Item
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
