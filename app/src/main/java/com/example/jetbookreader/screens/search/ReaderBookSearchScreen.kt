@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -94,22 +95,16 @@ fun SearchForm(
 fun BookList(navController: NavController, viewModel: BookSearchViewModel) {
 
     val listOfBooks = viewModel.list
-
-
-//    val lisOfBooks = listOf<MBook>(
-//        MBook(id = "1", title = "Test", authors = "Test", notes = null),
-//        MBook(id = "1", title = "Test", authors = "Test", notes = null),
-//        MBook(id = "1", title = "Test", authors = "Test", notes = null),
-//        MBook(id = "1", title = "Test", authors = "Test", notes = null),
-//        MBook(id = "1", title = "Test", authors = "Test", notes = null),
-//        MBook(id = "1", title = "Test", authors = "Test", notes = null)
-//    )
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp)
-    ) {
-        items(items = listOfBooks) { book ->
-            BookRow(book, navController)
+    if (viewModel.isLoading) {
+        LinearProgressIndicator()
+    } else {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(16.dp)
+        ) {
+            items(items = listOfBooks) { book ->
+                BookRow(book, navController)
+            }
         }
     }
 }
@@ -127,7 +122,8 @@ fun BookRow(book: Item, navController: NavController) {
             modifier = Modifier.padding(5.dp),
             verticalAlignment = Alignment.Top
         ) {
-            val imageUrl: String = book.volumeInfo.imageLinks.smallThumbnail.ifEmpty { "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" }
+            val imageUrl: String =
+                book.volumeInfo.imageLinks.smallThumbnail.ifEmpty { "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" }
             Image(
                 painter = rememberAsyncImagePainter(model = ""),
                 contentDescription = "book image",
@@ -139,10 +135,23 @@ fun BookRow(book: Item, navController: NavController) {
             Column() {
                 Text(text = book.volumeInfo.title, overflow = TextOverflow.Ellipsis)
                 Text(
-                    text = "Authors ${book.volumeInfo.authors}", overflow = TextOverflow.Ellipsis,
+                    text = "${book.volumeInfo.authors}",
+                    overflow = TextOverflow.Ellipsis,
+                    fontStyle = FontStyle.Italic,
                     style = MaterialTheme.typography.caption
                 )
-
+                Text(
+                    text = "Date: ${book.volumeInfo.publishedDate}",
+                    overflow = TextOverflow.Ellipsis,
+                    fontStyle = FontStyle.Italic,
+                    style = MaterialTheme.typography.caption
+                )
+                Text(
+                    text = "${book.volumeInfo.categories}",
+                    overflow = TextOverflow.Ellipsis,
+                    fontStyle = FontStyle.Italic,
+                    style = MaterialTheme.typography.caption
+                )
             }
         }
     }
