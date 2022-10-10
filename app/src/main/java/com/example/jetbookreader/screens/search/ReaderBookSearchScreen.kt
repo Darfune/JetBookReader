@@ -112,7 +112,7 @@ fun BookList(navController: NavController, viewModel: BookSearchViewModel) {
 fun BookRow(book: Item, navController: NavController) {
     Card(modifier = Modifier
         .clickable {
-            navController.navigate(ReaderScreens.BookDetailsScreen.name)
+            navController.navigate(ReaderScreens.BookDetailsScreen.name + "/${book.id}")
         }
         .fillMaxWidth()
         .height(100.dp)
