@@ -221,9 +221,9 @@ fun ReaderAppBar(
 
 
 @Composable
-fun FABContent(onTap: (String) -> Unit) {
+fun FABContent(onTap: () -> Unit) {
     FloatingActionButton(
-        onClick = { onTap },
+        onClick = { onTap() },
         shape = RoundedCornerShape(50.dp),
         backgroundColor = Color(0xFF92CBDF)// MaterialTheme.colors.background
     ) {

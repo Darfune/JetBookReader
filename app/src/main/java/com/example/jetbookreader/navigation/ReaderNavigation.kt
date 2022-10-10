@@ -50,7 +50,7 @@ fun ReaderNavigation() {
         }
 
         composable(ReaderScreens.BookDetailsScreen.name) {
-            BookDetailsScreen(navController)
+            BookDetailsScreen(navController, bookId = "")
         }
     }
 }

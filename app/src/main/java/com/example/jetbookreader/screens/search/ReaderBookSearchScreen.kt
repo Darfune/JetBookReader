@@ -34,10 +34,9 @@ import com.example.jetbookreader.navigation.ReaderScreens
 import com.example.jetbookreader.screens.splash.InputField
 import com.example.jetbookreader.screens.splash.ReaderAppBar
 
-@Preview
 @Composable
 fun SearchScreen(
-    navController: NavController = NavController(LocalContext.current),
+    navController: NavController,
     viewModel: BookSearchViewModel = hiltViewModel()
 ) {
     Scaffold(topBar = {
@@ -112,7 +111,9 @@ fun BookList(navController: NavController, viewModel: BookSearchViewModel) {
 @Composable
 fun BookRow(book: Item, navController: NavController) {
     Card(modifier = Modifier
-        .clickable { }
+        .clickable {
+            navController.navigate(ReaderScreens.BookDetailsScreen.name)
+        }
         .fillMaxWidth()
         .height(100.dp)
         .padding(3.dp),
@@ -125,7 +126,7 @@ fun BookRow(book: Item, navController: NavController) {
             val imageUrl: String =
                 book.volumeInfo.imageLinks.smallThumbnail.ifEmpty { "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" }
             Image(
-                painter = rememberAsyncImagePainter(model = ""),
+                painter = rememberAsyncImagePainter(model = imageUrl),
                 contentDescription = "book image",
                 modifier = Modifier
                     .width(80.dp)
