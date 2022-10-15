@@ -54,8 +54,6 @@ fun HomeContent(navController: NavController, viewModel: HomeScreenViewModel) {
         listOfBooks = viewModel.data.value.data!!.toList().filter { mBook ->
         mBook.userId == currentUser?.uid.toString()
         }
-
-        Log.d("Books", "HomeContent: ${listOfBooks.toString()}")
     }
 
     val currentUserName =
@@ -94,18 +92,18 @@ fun HomeContent(navController: NavController, viewModel: HomeScreenViewModel) {
                 Divider()
             }
         }
-        ReadingRightNowArea(books = listOf(), navController)
+        ReadingRightNowArea(books = listOfBooks, navController)
 
         TitleSection(label = "Reading List")
 
-        BookListArea(listOfBooks = emptyList(), navController)
+        BookListArea(listOfBooks = listOfBooks, navController)
     }
 }
 
 @Composable
 fun BookListArea(listOfBooks: List<MBook>, navController: NavController) {
     HorizontalScrollableComponent(listOfBooks) {
-        //TODO: on card clicked navigate to details
+        navController.navigate(ReaderScreens.UpdateScreen.name + "/$it")
     }
 }
 
@@ -128,5 +126,7 @@ fun HorizontalScrollableComponent(listOfBooks: List<MBook>, onCardPressed: (Stri
 
 @Composable
 fun ReadingRightNowArea(books: List<MBook>, navController: NavController) {
-    ListCard()
+    HorizontalScrollableComponent(listOfBooks = books) {
+
+    }
 }
