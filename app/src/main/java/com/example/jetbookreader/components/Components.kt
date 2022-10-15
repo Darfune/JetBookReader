@@ -32,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import com.example.jetbookreader.model.MBook
 import com.example.jetbookreader.navigation.ReaderScreens
@@ -260,10 +261,9 @@ fun BookRating(score: Double = 4.5) {
 }
 
 
-@Preview
 @Composable
 fun ListCard(
-    book: MBook = MBook("dasd", "Running", "Me and you", "Hello World"),
+    book: MBook,
     onPressDetails: (String) -> Unit = {}
 ) {
 
@@ -291,7 +291,7 @@ fun ListCard(
         ) {
             Row(horizontalArrangement = Arrangement.Center) {
                 Image(
-                    painter = rememberImagePainter(data = ""),
+                    painter = rememberAsyncImagePainter(model = book.photoUrl.toString()),
                     contentDescription = "book image",
                     modifier = Modifier
                         .height(140.dp)
