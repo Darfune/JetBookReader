@@ -2,7 +2,6 @@ package com.example.jetbookreader.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -37,8 +36,15 @@ fun ReaderNavigation() {
             LoginScreen(navController)
         }
 
-        composable(ReaderScreens.UpdateScreen.name) {
-            UpdateScreen(navController)
+        composable(
+            ReaderScreens.UpdateScreen.name + "/{bookItemId}",
+            arguments = listOf(navArgument("bookItemId") {
+                type = NavType.StringType
+            })
+        ) { backStackEntry ->
+            backStackEntry.arguments?.getString("bookItemId").let {
+                UpdateScreen(navController, bookItemId = it.toString())
+            }
         }
 
         composable(ReaderScreens.ReaderStatsScreen.name) {
