@@ -144,6 +144,16 @@ fun CardListItem(book: MBook, onPressDetails: () -> Unit) {
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
+                    text = book.authors.toString(),
+                    style = MaterialTheme.typography.body2,
+                    modifier = Modifier.padding(
+                        start = 8.dp,
+                        end = 8.dp,
+                        top = 2.dp,
+                        bottom = 8.dp
+                    )
+                )
+                Text(
                     text = book.publishedDate.toString(),
                     style = MaterialTheme.typography.body2,
                     modifier = Modifier.padding(
